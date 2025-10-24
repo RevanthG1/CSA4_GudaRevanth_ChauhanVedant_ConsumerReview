@@ -160,12 +160,10 @@ public class Review {
   String reviewText = textToString(fileName);
   double total = 0.0;
 
-  // Split the review into words
   String[] words = reviewText.split(" ");
 
   for (String word : words)
   {
-    // Remove punctuation and get sentiment value
     String cleanWord = removePunctuation(word);
     total += sentimentVal(cleanWord);
   }
@@ -178,15 +176,15 @@ public static int starRating(String fileName)
   double total = totalSentiment(fileName);
 
   if (total < 0) {
-    return 1; // very negative review
+    return 1; 
   } else if (total < 5) {
-    return 2; // somewhat negative
+    return 2; 
   } else if (total < 10) {
-    return 3; // neutral to positive
+    return 3; 
   } else if (total < 15) {
-    return 4; // positive
+    return 4; 
   } else {
-    return 5; // very positive
+    return 5; 
   }
 }
 }
