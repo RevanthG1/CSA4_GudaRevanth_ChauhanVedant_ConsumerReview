@@ -7,35 +7,17 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Review.java — Single-line analyzer formatted like the class demo.
- *
- * Usage:
- *   java Review 23      // analyze line 23 from reviews.txt
- *   java Review         // prompts for a line number
- *
- * Output:
- *   === Sentiment Analysis Demo ===
- *   Analyzing: <full review line text>
- *
- *   Total Sentiment Value: <value>
- *   Star Rating: ****
- *
- *   ==== Word-by-Word Breakdown ====
- *   word1:  0.3500
- *   word2: -0.4100
- *   ...
- */
+
 public class Review {
 
-  // ====== Lexicon / adjective data ======
+  
   private static HashMap<String, Double> sentiment = new HashMap<>();
   private static ArrayList<String> posAdjectives = new ArrayList<>();
   private static ArrayList<String> negAdjectives = new ArrayList<>();
 
-  // ---------- load resources once ----------
+  
   static {
-    // Load sentiment lexicon
+    
     try (Scanner input = new Scanner(new File("cleanSentiment.csv"))) {
       while (input.hasNextLine()) {
         String[] temp = input.nextLine().split(",");
@@ -47,7 +29,7 @@ public class Review {
       System.out.println("Error reading or parsing cleanSentiment.csv");
     }
 
-    // (Not required for scoring; kept for completeness)
+    
     try (Scanner input = new Scanner(new File("positiveAdjectives.txt"))) {
       while (input.hasNextLine()) posAdjectives.add(input.nextLine().trim());
     } catch (Exception e) {
@@ -60,7 +42,7 @@ public class Review {
     }
   }
 
-  // ---------- ConsumerLab-style helpers ----------
+  
   public static double sentimentVal(String word) {
     try { return sentiment.get(word.toLowerCase()); }
     catch (Exception e) { return 0; }
@@ -76,7 +58,7 @@ public class Review {
     return word;
   }
 
-  // ---------- read reviews.txt into memory ----------
+  
   public static List<String> readLines(String fileName) {
     List<String> lines = new ArrayList<>();
     try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -90,7 +72,7 @@ public class Review {
     return lines;
   }
 
-  // ---------- map total to 1–5 stars (like your rubric thresholds) ----------
+  
   public static int starRatingFromTotal(double total) {
     if (total < 0) return 1;
     else if (total < 5) return 2;
@@ -99,19 +81,19 @@ public class Review {
     else return 5;
   }
 
-  // ---------- pretty printer for stars as asterisks ----------
+  
   public static String starsAsAsterisks(int stars) {
     if (stars < 1) stars = 1;
     if (stars > 5) stars = 5;
     return "*".repeat(stars);
   }
 
-  // ---------- analyze one line of text & print demo-style output ----------
+  
   public static void analyzeOneReview(String text) {
     System.out.println("=== Sentiment Analysis Demo ===\n");
     System.out.println("Analyzing: " + text + "\n");
 
-    // total sentiment
+   
     double total = 0.0;
     String[] tokens = text.split("\\s+");
     for (String tok : tokens) {
@@ -120,11 +102,11 @@ public class Review {
     }
 
     int stars = starRatingFromTotal(total);
-    System.out.printf("Total Sentiment Value: %.16f%n", total); // long precision like the screenshot
+    System.out.printf("Total Sentiment Value: %.16f%n", total); 
     System.out.println("Star Rating: " + starsAsAsterisks(stars));
     System.out.println();
 
-    // word-by-word breakdown
+    
     System.out.println("==== Word-by-Word Breakdown ====\n");
     for (String tok : tokens) {
       String base = removePunctuation(tok).toLowerCase();
@@ -134,7 +116,7 @@ public class Review {
     }
   }
 
-  // ---------- main ----------
+  
   public static void main(String[] args) {
     List<String> lines = readLines("reviews.txt");
     if (lines.isEmpty()) {
@@ -144,7 +126,7 @@ public class Review {
 
     int lineNum;
     if (args.length > 0) {
-      // allow: java Review 23
+      
       try {
         lineNum = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
@@ -152,7 +134,7 @@ public class Review {
         return;
       }
     } else {
-      // prompt if no arg
+      
       Scanner sc = new Scanner(System.in);
       System.out.println("reviews.txt has " + lines.size() + " non-empty lines.");
       System.out.print("Enter a line number to analyze (1-" + lines.size() + "): ");
